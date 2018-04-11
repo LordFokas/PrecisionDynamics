@@ -1,0 +1,16 @@
+[
+{
+  "modid": "precisiondynamics",
+  "name": "Precision Dynamics",
+  "description": "Precision logistics for CoFH's \"Thermal\" mod series",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LordFokas"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
