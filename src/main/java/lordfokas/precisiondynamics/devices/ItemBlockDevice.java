@@ -22,11 +22,11 @@ public class ItemBlockDevice extends ItemBlock {
         this.block = block;
         setRegistryName(block.getRegistryName());
         setHasSubtypes(true);
-        setCreativeTab(PrecisionDynamics.instance.tab);
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
+        if(tab == PrecisionDynamics.instance.tab)
         for(EnumVariant variant : EnumVariant.values()){
             list.add(block.device.getStack(variant));
         }
