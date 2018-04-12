@@ -1,10 +1,30 @@
+# Blocks
 tile.balancer_energy.name=Energy Balancer
 tile.balancer_fluid.name=Fluid Balancer
 tile.balancer_item.name=Item Balancer
 tile.counter_energy.name=Energy Counter
 tile.counter_fluid.name=Fluid Counter
 tile.counter_item.name=Item Counter
-tile.crossover.name=Crossover
 tile.prioritizer_energy.name=Energy Prioritizer
 tile.prioritizer_fluid.name=Fluid Prioritizer
 tile.prioritizer_item.name=Item Prioritizer
+
+tile.balancer_energy.tooltip=Balances energy throughput
+tile.balancer_fluid.tooltip=Balances fluid throughput
+tile.balancer_item.tooltip=Balances item throughput
+tile.counter_energy.tooltip=Counts how much energy passes through
+tile.counter_fluid.tooltip=Counts how much fluid passes through
+tile.counter_item.tooltip=Counts how many items pass through
+tile.prioritizer_energy.tooltip=Prioritizes one energy channel over the other
+tile.prioritizer_fluid.tooltip=Prioritizes one fluid channel over the other
+tile.prioritizer_item.tooltip=Prioritizes one item channel over the other
+
+tile.crossover.name=Crossover
+tile.crossover.tooltip=Allows multiple transports to cross in a single point
+
+# Tooltip extra info
+tooltip.throughput1=Maximum Throughput: %s
+tooltip.throughput3=Maximum Throughputs
+tooltip.throughput.energy=Energy Channels: %s
+tooltip.throughput.fluid=Fluid Channels: %s
+tooltip.throughput.item=Item Channels: %s
