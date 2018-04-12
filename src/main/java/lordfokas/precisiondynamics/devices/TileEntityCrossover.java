@@ -1,4 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
-public class TileEntityCrossover extends TileEntityDevice {
+import lordfokas.precisiondynamics.devices.base.TileEntityBase;
+
+public class TileEntityCrossover extends TileEntityBase {
+
 }

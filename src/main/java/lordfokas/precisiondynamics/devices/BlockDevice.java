@@ -1,5 +1,8 @@
 package lordfokas.precisiondynamics.devices;
 
+import lordfokas.precisiondynamics.devices.base.BlockBase;
+import lordfokas.precisiondynamics.devices.base.EnumVariant;
+import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -32,9 +35,10 @@ public class BlockDevice extends BlockBase {
     @Nullable
     @Override
     public TileEntityDevice createTileEntity(World world, IBlockState state) {
+        EnumVariant variant = state.getValue(VARIANT);
         switch(device){
             case BALANCER: return null;
-            case COUNTER: return new TileEntityDeviceCounter();
+            case COUNTER: return new TileEntityDeviceCounter(variant);
             case PRIORITIZER: return null;
             default: return null;
         }

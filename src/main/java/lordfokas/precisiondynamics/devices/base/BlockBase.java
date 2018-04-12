@@ -1,4 +1,4 @@
-package lordfokas.precisiondynamics.devices;
+package lordfokas.precisiondynamics.devices.base;
 
 import lordfokas.precisiondynamics.PrecisionDynamics;
 import net.minecraft.block.Block;

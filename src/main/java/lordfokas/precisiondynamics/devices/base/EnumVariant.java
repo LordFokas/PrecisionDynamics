@@ -1,4 +1,4 @@
-package lordfokas.precisiondynamics.devices;
+package lordfokas.precisiondynamics.devices.base;
 
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;

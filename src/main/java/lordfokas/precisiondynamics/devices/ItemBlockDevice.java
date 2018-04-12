@@ -1,5 +1,6 @@
 package lordfokas.precisiondynamics.devices;
 
+import lordfokas.precisiondynamics.devices.base.EnumVariant;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

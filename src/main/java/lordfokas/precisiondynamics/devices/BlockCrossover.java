@@ -1,5 +1,6 @@
 package lordfokas.precisiondynamics.devices;
 
+import lordfokas.precisiondynamics.devices.base.BlockBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;
 
