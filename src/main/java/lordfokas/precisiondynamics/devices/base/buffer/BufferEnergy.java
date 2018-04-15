@@ -2,19 +2,29 @@ package lordfokas.precisiondynamics.devices.base.buffer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class BufferEnergy extends Buffer<BufferEnergy> implements IEnergyStorage {
+public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implements IEnergyStorage {
+    @CapabilityInject(IEnergyStorage.class)
+    private static Capability<IEnergyStorage> CAPABILITY_ENERGY;
+    private static final int CAPACITY_ENERGY = 320_000;
+
     private EnergyStorage storage = new EnergyStorage(CAPACITY_ENERGY);
 
-    @Override
-    public void refill(BufferEnergy other) {
-        int filled = other.storage.receiveEnergy(storage.getEnergyStored(), false);
-        storage.extractEnergy(filled, false);
+    @Override public void refill(BufferEnergy other) { pushInto(other.storage);}
+    @Override public void pushInto(IEnergyStorage capability) { movedOut(refill(capability, storage), true); }
+    @Override public void pullFrom(IEnergyStorage capability) { movedIn(refill(capability, storage), true); }
+
+    private int refill(IEnergyStorage from, IEnergyStorage into){
+        int toMove = from.extractEnergy(into.receiveEnergy(from.getEnergyStored(), true), true);
+        into.receiveEnergy(toMove, false);
+        from.extractEnergy(toMove, false);
+        return toMove;
     }
 
-    @Override public Capability getCapability() { return CAPABILITY_ENERGY; }
+    @Override public Capability<IEnergyStorage> getCapability() { return CAPABILITY_ENERGY; }
 
     @Override
     public NBTTagCompound serialize() {

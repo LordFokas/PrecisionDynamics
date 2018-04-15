@@ -2,6 +2,7 @@ package lordfokas.precisiondynamics.devices.base.buffer;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -9,16 +10,26 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class BufferFluid extends Buffer<BufferFluid> implements IFluidHandler {
+public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements IFluidHandler {
+    @CapabilityInject(IFluidHandler.class)
+    private static Capability<IFluidHandler> CAPABILITY_FLUID;
+    private static final int CAPACITY_FLUID = 32_000;
+
     private final FluidTank tank = new FluidTank(CAPACITY_FLUID){{ setCanFill(true); setCanDrain(true); }};
 
-    @Override
-    public void refill(BufferFluid other) {
-        int filled = other.tank.fill(tank.getFluid(), true);
-        tank.drain(filled, true);
+    @Override public void refill(BufferFluid other) { pushInto(other.tank); }
+    @Override public void pushInto(IFluidHandler capability) { movedOut(refill(tank, capability), true); }
+    @Override public void pullFrom(IFluidHandler capability) { movedIn(refill(capability, tank), true); }
+
+    private int refill(IFluidHandler from, IFluidHandler into){
+        int toMove = into.fill(from.drain(Integer.MAX_VALUE, false), false);
+        if(toMove == 0) return 0;
+        FluidStack drained = from.drain(toMove, true);
+        into.fill(drained, true);
+        return drained.amount;
     }
 
-    @Override public Capability getCapability() { return CAPABILITY_FLUID; }
+    @Override public Capability<IFluidHandler> getCapability() { return CAPABILITY_FLUID; }
     @Override public NBTTagCompound serialize() { return tank.writeToNBT(new NBTTagCompound()); }
     @Override public void deserialize(NBTTagCompound data) { tank.readFromNBT(data); }
     @Override public IFluidTankProperties[] getTankProperties() { return tank.getTankProperties(); }

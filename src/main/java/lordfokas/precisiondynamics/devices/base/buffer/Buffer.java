@@ -2,25 +2,15 @@ package lordfokas.precisiondynamics.devices.base.buffer;
 
 import lordfokas.precisiondynamics.devices.base.ICapabilityComponent;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.IItemHandler;
 
-public abstract class Buffer<T extends Buffer<T>> implements ICapabilityComponent, INBTSerializable<NBTTagCompound> {
-    @CapabilityInject(IEnergyStorage.class) protected static Capability<IEnergyStorage> CAPABILITY_ENERGY;
-    @CapabilityInject(IFluidHandler.class) protected static Capability<IFluidHandler> CAPABILITY_FLUID;
-    @CapabilityInject(IItemHandler.class) protected static Capability<IItemHandler> CAPABILITY_ITEM;
-    protected static final int CAPACITY_ENERGY = 320_000;
-    protected static final int CAPACITY_FLUID = 32_000;
-    protected static final int CAPACITY_ITEM = 16;
-
+public abstract class Buffer<C, T extends Buffer<C, T>> implements ICapabilityComponent<C>, INBTSerializable<NBTTagCompound> {
     protected int input = 0, output = 0;
     protected boolean canInput = false, canOutput = false, isCounting = false;
 
     public abstract void refill(T other);
+    public abstract void pushInto(C capability);
+    public abstract void pullFrom(C capability);
     public abstract NBTTagCompound serialize();
     public abstract void deserialize(NBTTagCompound data);
 

@@ -1,7 +1,8 @@
 package lordfokas.precisiondynamics;
 
 import lordfokas.precisiondynamics.devices.*;
-import lordfokas.precisiondynamics.devices.base.EnumVariant;
+import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.packets.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,7 +37,9 @@ public class PrecisionDynamics{
 
     @SidedProxy(clientSide = "lordfokas.precisiondynamics.ProxyClient",
                 serverSide = "lordfokas.precisiondynamics.ProxyDedicatedServer")
-    private static IProxy proxy;
+    public static IProxy proxy;
+
+
 
     public final CreativeTabs tab = new TabPrecisionDynamics();
     public BlockDevice balancer, counter, prioritizer;
@@ -42,18 +47,21 @@ public class PrecisionDynamics{
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt){
-        balancer = new BlockDevice(EnumDevice.BALANCER);
-        counter = new BlockDevice(EnumDevice.COUNTER);
-        prioritizer = new BlockDevice(EnumDevice.PRIORITIZER);
+        balancer = new BlockDevice(DeviceType.BALANCER);
+        counter = new BlockDevice(DeviceType.COUNTER);
+        prioritizer = new BlockDevice(DeviceType.PRIORITIZER);
         crossover = new BlockCrossover();
+
+        PacketHandler.INSTANCE.init();
+        proxy.registerTESRs();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt){
         Object servo = GameRegistry.makeItemStack("thermalfoundation:material", 512, 1, null);
         Object frame = GameRegistry.makeItemStack("thermalexpansion:frame", 64, 1, null);
-        for(EnumDevice device : EnumDevice.values())
-        for(EnumVariant variant : EnumVariant.values()){
+        for(DeviceType device : DeviceType.values())
+        for(Variant variant : Variant.values()){
             GameRegistry.addShapedRecipe(new ResourceLocation(MODID, device.name+"_"+variant.suffix),
                     null, device.getStack(variant),
                     "nCn", "BFB", "GSG",
@@ -85,9 +93,9 @@ public class PrecisionDynamics{
         }
     }
 
-    // TODO: should not be here, move to EnumVariant?
+    // TODO: should not be here, move to Variant?
     private Object getVariantItem(int index){
-        return EnumVariant.values()[index].item;
+        return Variant.values()[index].item;
     }
 
     @EventBusSubscriber
@@ -119,7 +127,7 @@ public class PrecisionDynamics{
 
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent evt){
-            for(EnumVariant variant : EnumVariant.values()){
+            for(Variant variant : Variant.values()){
                 proxy.registerItemRenderer(Item.getItemFromBlock(instance.balancer), variant.ordinal(),
                         instance.balancer.device.name, "facing=player,variant="+variant.getName());
                 proxy.registerItemRenderer(Item.getItemFromBlock(instance.counter), variant.ordinal(),

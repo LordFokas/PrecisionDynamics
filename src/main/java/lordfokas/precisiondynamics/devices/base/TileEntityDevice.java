@@ -2,10 +2,12 @@ package lordfokas.precisiondynamics.devices.base;
 
 import lordfokas.precisiondynamics.devices.base.buffer.Buffer;
 
-public class TileEntityDevice extends TileEntityBase {
-    protected final EnumVariant variant;
+import java.util.List;
 
-    protected TileEntityDevice(EnumVariant variant){
+public class TileEntityDevice extends TileEntityBase {
+    public final Variant variant;
+
+    protected TileEntityDevice(Variant variant){
         this.variant = variant;
     }
 

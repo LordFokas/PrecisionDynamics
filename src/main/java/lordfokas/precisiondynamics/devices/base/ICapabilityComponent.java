@@ -2,6 +2,6 @@ package lordfokas.precisiondynamics.devices.base;
 
 import net.minecraftforge.common.capabilities.Capability;
 
-public interface ICapabilityComponent {
-    Capability getCapability();
+public interface ICapabilityComponent<C> {
+    Capability<C> getCapability();
 }

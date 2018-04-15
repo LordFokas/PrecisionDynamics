@@ -1,11 +1,11 @@
 package lordfokas.precisiondynamics.devices;
 
 import lordfokas.precisiondynamics.PrecisionDynamics;
-import lordfokas.precisiondynamics.devices.base.EnumVariant;
+import lordfokas.precisiondynamics.devices.base.Variant;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public enum EnumDevice {
+public enum DeviceType {
     BALANCER("balancer", "Bronze", null, "obsidian"),
     COUNTER("counter", "Aluminum", "dustGlowstone", null),
     PRIORITIZER("prioritizer", "Nickel", null, null);
@@ -13,7 +13,7 @@ public enum EnumDevice {
     public final String name, metal;
     private final Object sides, top;
 
-    EnumDevice(String name, String metal, Object sides, Object top){
+    DeviceType(String name, String metal, Object sides, Object top){
         this.name = name;
         this.metal = metal;
         this.sides = sides;
@@ -24,15 +24,15 @@ public enum EnumDevice {
         return base == null ? type : base;
     }
 
-    public Object getSides(EnumVariant variant){
+    public Object getSides(Variant variant){
         return fallback(sides, variant.item);
     }
 
-    public Object getTop(EnumVariant variant){
+    public Object getTop(Variant variant){
         return fallback(top, variant.item);
     }
 
-    public ItemStack getStack(EnumVariant variant){
+    public ItemStack getStack(Variant variant){
         return GameRegistry.makeItemStack(PrecisionDynamics.MODID+":"+name, variant.ordinal(), 1, null);
     }
 }

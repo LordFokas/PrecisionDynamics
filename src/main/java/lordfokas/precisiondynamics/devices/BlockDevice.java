@@ -1,7 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
 import lordfokas.precisiondynamics.devices.base.BlockBase;
-import lordfokas.precisiondynamics.devices.base.EnumVariant;
+import lordfokas.precisiondynamics.devices.base.Variant;
 import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -20,10 +20,10 @@ import javax.annotation.Nullable;
 public class BlockDevice extends BlockBase {
     public static final IProperty<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class,
             EnumFacing.NORTH, EnumFacing.WEST, EnumFacing.SOUTH, EnumFacing.EAST);
-    public static final IProperty<EnumVariant> VARIANT = EnumVariant.PROPERTY;
-    public final EnumDevice device;
+    public static final IProperty<Variant> VARIANT = Variant.PROPERTY;
+    public final DeviceType device;
 
-    public BlockDevice(EnumDevice device) {
+    public BlockDevice(DeviceType device) {
         super(device.name);
         this.device = device;
         setDefaultState(getBlockState().getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -35,7 +35,7 @@ public class BlockDevice extends BlockBase {
     @Nullable
     @Override
     public TileEntityDevice createTileEntity(World world, IBlockState state) {
-        EnumVariant variant = state.getValue(VARIANT);
+        Variant variant = state.getValue(VARIANT);
         switch(device){
             case BALANCER: return null;
             case COUNTER: return new TileEntityDeviceCounter(variant);
@@ -58,12 +58,12 @@ public class BlockDevice extends BlockBase {
     @Override // TODO: find out the replacement method
     public IBlockState getStateFromMeta(int meta) {
         return getBlockState().getBaseState()
-                .withProperty(VARIANT, EnumVariant.values()[meta>>2])
+                .withProperty(VARIANT, Variant.values()[meta>>2])
                 .withProperty(FACING, EnumFacing.values()[(meta&3)+2]);
     }
 
     protected IBlockState getBaseStateForPlacement(ItemStack stack) {
-        return getDefaultState().withProperty(VARIANT, EnumVariant.values()[stack.getMetadata()]);
+        return getDefaultState().withProperty(VARIANT, Variant.values()[stack.getMetadata()]);
     }
 
     @Override
