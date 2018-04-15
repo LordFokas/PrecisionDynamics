@@ -6,6 +6,7 @@ import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
 import lordfokas.precisiondynamics.packets.PacketHandler;
 import lordfokas.precisiondynamics.packets.PacketUpdateCounterStats;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
             throughput = buffer.getOutputAmount();
             buffer.resetAmounts();
             historic += throughput;
+            throughput /= 20;
             updateEligibleClients();
         }
     }
@@ -50,5 +52,13 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     public void onUpdate(int throughput, long historic){
         this.throughput = throughput;
         this.historic = historic;
+    }
+
+    public int getFacingAngle(){
+        int angle = 0;
+        EnumFacing facing = ((BlockDevice)blockType).getFacing(world.getBlockState(pos));
+        if(facing.getAxis() == EnumFacing.Axis.X) angle += 90;
+        if(facing.getAxisDirection() == EnumFacing.AxisDirection.POSITIVE) angle += 180;
+        return angle;
     }
 }

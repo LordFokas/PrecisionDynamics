@@ -77,4 +77,6 @@ public class BlockDevice extends BlockBase {
     public int damageDropped(IBlockState state) {
         return state.getValue(VARIANT).ordinal();
     }
+
+    public EnumFacing getFacing(IBlockState state){ return state.getValue(FACING); }
 }
