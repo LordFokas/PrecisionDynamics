@@ -1,6 +1,9 @@
 {
 	"forge_marker": 1,
-	"defaults": { "model": "precisiondynamics:device" },
+	"defaults": {
+		"model": "precisiondynamics:device",
+		"textures": { "face": "precisiondynamics:face_counter" }
+	},
 	"variants": {
 		"facing": {
 			"player": { "transform": "forge:default-block" },
@@ -10,9 +13,9 @@
 			"west": { "y": 270 }
 		},
 		"variant": {
-			"energy": { "textures": { "face": "precisiondynamics:face_counter_energy" } },
-			"fluid": { "textures": { "face": "precisiondynamics:face_counter_fluid" } },
-			"item": { "textures": { "face": "precisiondynamics:face_counter_item" } }
+			"energy": { "textures": { "bright": "precisiondynamics:face_counter_energy" } },
+			"fluid": { "textures": { "bright": "precisiondynamics:face_counter_fluid" } },
+			"item": { "textures": { "bright": "precisiondynamics:face_counter_item" } }
 		}
 	}
 }

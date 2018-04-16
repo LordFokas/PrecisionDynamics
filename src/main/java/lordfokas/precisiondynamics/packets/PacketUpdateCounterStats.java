@@ -1,6 +1,5 @@
 package lordfokas.precisiondynamics.packets;
 
-import com.jcraft.jogg.Packet;
 import io.netty.buffer.ByteBuf;
 import lordfokas.precisiondynamics.PrecisionDynamics;
 import lordfokas.precisiondynamics.devices.TileEntityDeviceCounter;

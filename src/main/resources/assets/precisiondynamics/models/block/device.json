@@ -3,7 +3,13 @@
 		"particle": "precisiondynamics:device_top",
 		"side": "precisiondynamics:device_side",
 		"top": "precisiondynamics:device_top",
-		"bottom": "precisiondynamics:device_bottom"
+		"bottom": "precisiondynamics:device_bottom",
+		"bright": "precisiondynamics:transparent",
+		"io_top": "precisiondynamics:transparent",
+		"io_bottom": "precisiondynamics:transparent",
+		"io_back": "precisiondynamics:transparent",
+		"io_left": "precisiondynamics:transparent",
+		"io_right": "precisiondynamics:transparent"
 	},
 	"elements": [{
 		"from": [0, 0, 0],
@@ -32,6 +38,35 @@
 			"east": {
 				"uv": [0, 0, 16, 16],
 				"texture": "#side"
+			}
+		}
+	},{
+		"from": [0, 0, 0],
+		"to": [16, 16, 16],
+		"faces": {
+			"north": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#bright"
+			},
+			"down": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#io_bottom"
+			},
+			"up": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#io_top"
+			},
+			"south": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#io_back"
+			},
+			"west": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#io_right"
+			},
+			"east": {
+				"uv": [0, 0, 16, 16],
+				"texture": "#io_left"
 			}
 		}
 	}]

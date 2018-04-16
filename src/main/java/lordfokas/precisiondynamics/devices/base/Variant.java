@@ -8,15 +8,15 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraftforge.common.capabilities.Capability;
 
 public enum Variant implements IStringSerializable {
-    ENERGY("energy", "blockRedstone", "RF"),
-    FLUID("fluid", Items.BUCKET, "mB"),
-    ITEM("item", Blocks.CHEST, "I");
+    ENERGY("energy", "blockRedstone", new Unit("RF")),
+    FLUID("fluid", Items.BUCKET, new Unit("B", Unit.Scale.MILLI)),
+    ITEM("item", Blocks.CHEST, new Unit("I"));
 
     public final String suffix;
     public final Object item;
-    public final String unit;
+    public final Unit unit;
 
-    Variant(String suffix, Object item, String unit){
+    Variant(String suffix, Object item, Unit unit){
         this.suffix = suffix;
         this.item = item;
         this.unit = unit;
