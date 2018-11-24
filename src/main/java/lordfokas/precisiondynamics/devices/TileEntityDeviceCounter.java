@@ -1,6 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
-import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.devices.base.configuration.Face;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import lordfokas.precisiondynamics.devices.base.buffer.Buffer;
 import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
 import lordfokas.precisiondynamics.packets.PacketHandler;
@@ -15,21 +16,21 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     private final Buffer<?, ?> buffer;
     public long historic = 0;
     public int throughput = 0;
-    private boolean autopush = false, autopull = false;
+    private boolean autopush = true, autopull = false;
 
     public TileEntityDeviceCounter(Variant variant) {
         super(variant);
         buffer = getBuffer();
         buffer.setMode(true, true);
         buffer.startCounting();
-        mapComponent(buffer);
+        mapComponent(buffer, Face.BLUE, Face.ORANGE);
     }
 
     @Override
     public void update() {
         if(world.isRemote) return;
-        if(autopush) pushAdjacent(buffer);
-        if(autopull) pullAdjacent(buffer);
+        if(autopush) pushAdjacent(buffer, Face.ORANGE);
+        if(autopull) pullAdjacent(buffer, Face.BLUE);
         if(world.getWorldTime() % 20 == 0){
             throughput = buffer.getOutputAmount();
             buffer.resetAmounts();

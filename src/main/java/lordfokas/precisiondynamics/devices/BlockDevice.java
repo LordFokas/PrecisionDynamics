@@ -1,7 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
 import lordfokas.precisiondynamics.devices.base.BlockBase;
-import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;

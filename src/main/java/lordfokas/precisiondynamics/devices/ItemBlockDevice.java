@@ -1,7 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
 import lordfokas.precisiondynamics.PrecisionDynamics;
-import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;

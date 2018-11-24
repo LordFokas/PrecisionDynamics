@@ -1,8 +1,7 @@
 package lordfokas.precisiondynamics.devices.base;
 
 import lordfokas.precisiondynamics.devices.base.buffer.Buffer;
-
-import java.util.List;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 
 public class TileEntityDevice extends TileEntityBase {
     public final Variant variant;

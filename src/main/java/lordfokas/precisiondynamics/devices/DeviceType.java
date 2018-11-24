@@ -1,7 +1,7 @@
 package lordfokas.precisiondynamics.devices;
 
 import lordfokas.precisiondynamics.PrecisionDynamics;
-import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

@@ -1,7 +1,7 @@
 package lordfokas.precisiondynamics;
 
 import lordfokas.precisiondynamics.devices.*;
-import lordfokas.precisiondynamics.devices.base.Variant;
+import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import lordfokas.precisiondynamics.packets.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;

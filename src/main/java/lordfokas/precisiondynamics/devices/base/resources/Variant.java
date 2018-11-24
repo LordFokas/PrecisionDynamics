@@ -1,11 +1,10 @@
-package lordfokas.precisiondynamics.devices.base;
+package lordfokas.precisiondynamics.devices.base.resources;
 
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.util.IStringSerializable;
-import net.minecraftforge.common.capabilities.Capability;
 
 public enum Variant implements IStringSerializable {
     ENERGY("energy", "blockRedstone", new Unit("RF")),

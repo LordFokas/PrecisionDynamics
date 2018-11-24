@@ -1,4 +1,4 @@
-package lordfokas.precisiondynamics.devices.base;
+package lordfokas.precisiondynamics.devices.base.resources;
 
 public class Unit {
     public final String name;
@@ -12,7 +12,7 @@ public class Unit {
 
     public String format(double amount){
         Scale scale = base;
-        if(amount != 0){
+        if(amount != 0){ // Get the best possible scale for readability...
             while(amount < 1 && scale != Scale.PICO){
                 amount *= 1000;
                 scale = scale.prev();
@@ -21,12 +21,13 @@ public class Unit {
                 amount /= 1000;
                 scale = scale.next();
             }
-            String str = amount+"";
-            str = str.substring(0, Math.min(4, str.length()));
-            if(str.endsWith(".")) str = str.replace(".", "");
-            return str + " " + scale.prefix + name;
+            amount += 0.000001; // Why properly round stuff when you can just hack it?
+            String str = amount+""; // Dirty string conversion.
+            str = str.substring(0, Math.min(4, str.length())); // Chop the end.
+            if(str.endsWith(".")) str = str.replace(".", ""); // Chop trailing dots.
+            return str + " " + scale.prefix + name; // Assemble.
         }else{
-            return "0 " + scale.prefix + name;
+            return "0 " + scale.prefix + name; // It's zero! No need for math here!
         }
     }
 
