@@ -14,7 +14,7 @@ public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implement
     private EnergyStorage storage = new EnergyStorage(CAPACITY_ENERGY);
 
     @Override public void refill(BufferEnergy other) { pushInto(other.storage);}
-    @Override public void pushInto(IEnergyStorage capability) { movedOut(refill(capability, storage), true); }
+    @Override public void pushInto(IEnergyStorage capability) { movedOut(refill(storage, capability), true); }
     @Override public void pullFrom(IEnergyStorage capability) { movedIn(refill(capability, storage), true); }
 
     private int refill(IEnergyStorage from, IEnergyStorage into){
