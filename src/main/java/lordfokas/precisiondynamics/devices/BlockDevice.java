@@ -1,5 +1,6 @@
 package lordfokas.precisiondynamics.devices;
 
+import lordfokas.precisiondynamics.PrecisionDynamics;
 import lordfokas.precisiondynamics.devices.base.BlockBase;
 import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
@@ -8,6 +9,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -84,5 +86,13 @@ public class BlockDevice extends BlockBase {
     @Override
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float x, float y, float z) {
+        if(world.isRemote) return true;
+        if(player.isSneaking()) return false;
+        player.openGui(PrecisionDynamics.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+        return true;
     }
 }
