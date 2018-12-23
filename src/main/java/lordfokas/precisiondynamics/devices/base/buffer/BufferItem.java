@@ -87,6 +87,7 @@ public class BufferItem extends Buffer<IItemHandler, BufferItem> implements IIte
     }
 
     // Access methods for GUIs
+    @Override
     public int getSize(){
         int size = 0, slots = 0;
         for(int i = 0; i<inventory.getSlots(); i++){
@@ -100,6 +101,7 @@ public class BufferItem extends Buffer<IItemHandler, BufferItem> implements IIte
         return size;
     }
 
+    @Override
     public int getStored(){
         int stored = 0;
         for(int i = 0; i<inventory.getSlots(); i++){

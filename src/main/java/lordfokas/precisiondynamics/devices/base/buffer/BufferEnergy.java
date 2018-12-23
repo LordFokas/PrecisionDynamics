@@ -49,6 +49,6 @@ public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implement
     @Override public boolean canReceive() { return canInput; }
 
     // Access methods for GUIs
-    public int getSize(){ return storage.getMaxEnergyStored(); }
-    public int getStored(){ return storage.getEnergyStored(); }
+    @Override public int getSize(){ return storage.getMaxEnergyStored(); }
+    @Override public int getStored(){ return storage.getEnergyStored(); }
 }

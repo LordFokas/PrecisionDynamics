@@ -55,4 +55,8 @@ public abstract class Buffer<C, T extends Buffer<C, T>> implements ICapabilityCo
         canInput = data.getBoolean("canInput");
         deserialize(data.getCompoundTag("variant"));
     }
+
+    // Access methods for GUIs
+    public abstract int getSize();
+    public abstract int getStored();
 }

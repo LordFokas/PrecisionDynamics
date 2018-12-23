@@ -10,13 +10,15 @@ public class GuiCounter extends GuiContainer {
     private static final ResourceLocation background = new ResourceLocation(PrecisionDynamics.MODID,"textures/gui/counter.png");
     private static final int textColor = 0x303030;
 
+    private final ContainerCounter container;
     private final TileEntityDeviceCounter te;
     private final Gauge gauge;
 
     public GuiCounter(TileEntityDeviceCounter te, ContainerCounter container){
         super(container);
+        this.container = container;
         this.te = te;
-        this.gauge = Gauge.wrap(te.getDeviceBuffer(), this);
+        this.gauge = new Gauge(te.variant, this);
         xSize = WIDTH;
         ySize = HEIGHT;
     }
@@ -29,6 +31,7 @@ public class GuiCounter extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int a, int b) {
+        gauge.setPercentage(((float)container.stored)/((float)container.size));
         gauge.render(152, 15);
 
         // headers
@@ -38,5 +41,10 @@ public class GuiCounter extends GuiContainer {
         // measurements
         fontRenderer.drawString("Rate: " + te.getRate(), 10,  17, textColor);
         fontRenderer.drawString("Total: " + te.getTotal(), 10, 27, textColor);
+
+        // DEBUG
+        fontRenderer.drawString("DEBUG *** *** *** ***", 10,  50, 0xFF0000);
+        fontRenderer.drawString("SZ: " + container.size, 10,  60, 0xFF0000);
+        fontRenderer.drawString("ST: " + container.stored, 10, 70, 0xFF0000);
     }
 }

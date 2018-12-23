@@ -61,7 +61,6 @@ public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements I
     }
 
     // Access methods for GUIs
-    public int getSize(){ return tank.getCapacity(); }
-    public int getStored(){ return tank.getFluidAmount(); }
-    public Fluid getFluid(){ return tank.getFluid().getFluid(); }
+    @Override public int getSize(){ return tank.getCapacity(); }
+    @Override public int getStored(){ return tank.getFluidAmount(); }
 }
