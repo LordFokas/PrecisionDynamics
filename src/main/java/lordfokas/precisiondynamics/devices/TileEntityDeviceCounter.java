@@ -63,11 +63,8 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
         return angle;
     }
 
-    public String getRate(){
-        return variant.unit.format(throughput) + "/t";
-    }
-
-    public String getTotal(){
-        return variant.unit.format(historic);
-    }
+    // Access methods for GUIs
+    public String getRate(){ return variant.unit.format(throughput) + "/t"; }
+    public String getTotal(){ return variant.unit.format(historic); }
+    public Buffer getDeviceBuffer(){ return buffer; }
 }

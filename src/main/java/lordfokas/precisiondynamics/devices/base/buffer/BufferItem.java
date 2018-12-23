@@ -85,4 +85,27 @@ public class BufferItem extends Buffer<IItemHandler, BufferItem> implements IIte
         movedOut(extracted.getCount(), !sim);
         return extracted;
     }
+
+    // Access methods for GUIs
+    public int getSize(){
+        int size = 0, slots = 0;
+        for(int i = 0; i<inventory.getSlots(); i++){
+            ItemStack stack = inventory.getStackInSlot(i);
+            if(stack != null){
+                size += stack.getMaxStackSize();
+                slots++;
+            }
+        }
+        size += ((inventory.getSlots()-slots)*64);
+        return size;
+    }
+
+    public int getStored(){
+        int stored = 0;
+        for(int i = 0; i<inventory.getSlots(); i++){
+            ItemStack stack = inventory.getStackInSlot(i);
+            if(stack != null){ stored += stack.getCount(); }
+        }
+        return stored;
+    }
 }

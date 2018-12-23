@@ -3,6 +3,7 @@ package lordfokas.precisiondynamics.devices.base.buffer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -58,4 +59,9 @@ public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements I
         if(fs != null) movedOut(fs.amount, b);
         return fs;
     }
+
+    // Access methods for GUIs
+    public int getSize(){ return tank.getCapacity(); }
+    public int getStored(){ return tank.getFluidAmount(); }
+    public Fluid getFluid(){ return tank.getFluid().getFluid(); }
 }

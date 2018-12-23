@@ -16,4 +16,10 @@ public class ContainerCounter extends Container {
     public boolean canInteractWith(EntityPlayer entityPlayer) {
         return true;
     }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        // TODO: synchronize buffers.
+    }
 }
