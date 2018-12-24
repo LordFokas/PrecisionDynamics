@@ -31,10 +31,7 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     @Override
     public void update() {
         if(world.isRemote) return;
-        if(autopush){
-            for(int i = 0; i < 10; i++)
-            pushAdjacent(buffer, Face.ORANGE);
-        }
+        if(autopush) pushAdjacent(buffer, Face.ORANGE);
         if(autopull) pullAdjacent(buffer, Face.BLUE);
         if(world.getWorldTime() % CYCLE_TICKS == 0){
             throughput = buffer.getOutputAmount();

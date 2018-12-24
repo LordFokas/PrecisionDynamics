@@ -123,7 +123,7 @@ public class TileEntityBase extends TileEntity{
         if(components != null)
             for(ICapabilityComponent component : components){
                 if(component.getCapability() == capability){
-                    if(component instanceof Buffer) {
+                    if(component instanceof Buffer) { // If the component is a buffer, only allow that face's operation.
                         Direction direction = Direction.offset(getFacing(), facing);
                         Face face = ioConfig.get(direction);
                         ((Buffer) component).setMode(face.allows(Operation.OUTPUT), face.allows(Operation.INPUT));
