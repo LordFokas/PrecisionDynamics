@@ -3,7 +3,6 @@ package lordfokas.precisiondynamics.devices.base.buffer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -23,9 +22,12 @@ public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements I
     @Override public void pullFrom(IFluidHandler capability) { movedIn(refill(capability, tank), true); }
 
     private int refill(IFluidHandler from, IFluidHandler into){
-        int toMove = into.fill(from.drain(Integer.MAX_VALUE, false), false);
+        FluidStack fs = from.drain(Integer.MAX_VALUE, false);
+        if(fs == null) return 0;
+        int toMove = into.fill(fs, false);
         if(toMove == 0) return 0;
         FluidStack drained = from.drain(toMove, true);
+        if(drained == null) return 0;
         into.fill(drained, true);
         return drained.amount;
     }
@@ -41,8 +43,7 @@ public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements I
         return movedIn(tank.fill(fluidStack, b), b);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public FluidStack drain(FluidStack fluidStack, boolean mov) {
         if(!canOutput) return null;
         return movedOut(tank.drain(fluidStack, mov), mov);
