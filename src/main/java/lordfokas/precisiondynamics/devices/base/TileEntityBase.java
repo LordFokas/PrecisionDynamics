@@ -7,6 +7,7 @@ import lordfokas.precisiondynamics.devices.base.buffer.BufferItem;
 import lordfokas.precisiondynamics.devices.base.buffer.BufferFluid;
 import lordfokas.precisiondynamics.devices.base.configuration.Direction;
 import lordfokas.precisiondynamics.devices.base.configuration.Face;
+import lordfokas.precisiondynamics.devices.base.configuration.Operation;
 import lordfokas.precisiondynamics.devices.base.resources.Variant;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -121,7 +122,14 @@ public class TileEntityBase extends TileEntity{
         List<ICapabilityComponent> components = getComponentsOnSide(facing);
         if(components != null)
             for(ICapabilityComponent component : components){
-                if(component.getCapability() == capability) return (T) component;
+                if(component.getCapability() == capability){
+                    if(component instanceof Buffer) {
+                        Direction direction = Direction.offset(getFacing(), facing);
+                        Face face = ioConfig.get(direction);
+                        ((Buffer) component).setMode(face.allows(Operation.OUTPUT), face.allows(Operation.INPUT));
+                    }
+                    return (T) component;
+                }
             }
         return null;
     }

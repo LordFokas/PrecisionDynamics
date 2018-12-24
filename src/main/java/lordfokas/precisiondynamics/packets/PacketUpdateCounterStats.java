@@ -6,11 +6,11 @@ import lordfokas.precisiondynamics.devices.TileEntityDeviceCounter;
 import net.minecraft.util.math.BlockPos;
 
 public class PacketUpdateCounterStats extends PacketBase.Block {
-    private int throughput;
+    private long throughput;
     private long historic;
 
     public PacketUpdateCounterStats(){}
-    public PacketUpdateCounterStats(BlockPos pos, int throughput, long historic){
+    public PacketUpdateCounterStats(BlockPos pos, long throughput, long historic){
         super(pos);
         this.throughput = throughput;
         this.historic = historic;
@@ -25,14 +25,14 @@ public class PacketUpdateCounterStats extends PacketBase.Block {
     @Override
     public void fromBytes(ByteBuf buf) {
         super.fromBytes(buf);
-        throughput = buf.readInt();
+        throughput = buf.readLong();
         historic = buf.readLong();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         super.toBytes(buf);
-        buf.writeInt(throughput);
+        buf.writeLong(throughput);
         buf.writeLong(historic);
     }
 }

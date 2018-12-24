@@ -1,8 +1,10 @@
 package lordfokas.precisiondynamics.gui;
 
 import lordfokas.precisiondynamics.PrecisionDynamics;
+import lordfokas.precisiondynamics.devices.DeviceType;
 import lordfokas.precisiondynamics.devices.TileEntityDeviceCounter;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiCounter extends GuiContainer {
@@ -10,6 +12,7 @@ public class GuiCounter extends GuiContainer {
     private static final ResourceLocation background = new ResourceLocation(PrecisionDynamics.MODID,"textures/gui/counter.png");
     private static final int textColor = 0x303030;
 
+    private final ItemStack stack;
     private final ContainerCounter container;
     private final TileEntityDeviceCounter te;
     private final Gauge gauge;
@@ -21,6 +24,7 @@ public class GuiCounter extends GuiContainer {
         this.gauge = new Gauge(te.variant, this);
         xSize = WIDTH;
         ySize = HEIGHT;
+        this.stack = DeviceType.COUNTER.getStack(te.variant);
     }
 
     @Override
@@ -35,7 +39,7 @@ public class GuiCounter extends GuiContainer {
         gauge.render(152, 15);
 
         // headers
-        fontRenderer.drawString(te.variant.suffix + " Counter", 7, 5, 0);
+        fontRenderer.drawString(stack.getDisplayName(), 7, 5, 0);
         fontRenderer.drawString("Inventory", 7, 82, 0);
 
         // measurements

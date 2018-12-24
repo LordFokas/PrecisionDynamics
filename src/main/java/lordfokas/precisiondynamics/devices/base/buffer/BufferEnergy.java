@@ -19,9 +19,7 @@ public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implement
 
     private int refill(IEnergyStorage from, IEnergyStorage into){
         int toMove = from.extractEnergy(into.receiveEnergy(from.getEnergyStored(), true), true);
-        into.receiveEnergy(toMove, false);
-        from.extractEnergy(toMove, false);
-        return toMove;
+        return from.extractEnergy(into.receiveEnergy(toMove, false), false);
     }
 
     @Override public Capability<IEnergyStorage> getCapability() { return CAPABILITY_ENERGY; }

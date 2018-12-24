@@ -13,9 +13,11 @@ import net.minecraft.util.ITickable;
 import java.util.List;
 
 public class TileEntityDeviceCounter extends TileEntityDevice implements ITickable {
+    private static final int CYCLE_TICKS = 20;
+    private static final int TP_FACTOR = 10_000_000;
     private final Buffer<?, ?> buffer;
     public long historic = 0;
-    public int throughput = 0;
+    public long throughput = 0;
     private boolean autopush = true, autopull = false;
 
     public TileEntityDeviceCounter(Variant variant) {
@@ -29,13 +31,16 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     @Override
     public void update() {
         if(world.isRemote) return;
-        if(autopush) pushAdjacent(buffer, Face.ORANGE);
+        if(autopush){
+            for(int i = 0; i < 10; i++)
+            pushAdjacent(buffer, Face.ORANGE);
+        }
         if(autopull) pullAdjacent(buffer, Face.BLUE);
-        if(world.getWorldTime() % 20 == 0){
+        if(world.getWorldTime() % CYCLE_TICKS == 0){
             throughput = buffer.getOutputAmount();
             buffer.resetAmounts();
             historic += throughput;
-            throughput /= 20;
+            throughput = throughput * TP_FACTOR / CYCLE_TICKS;
             updateEligibleClients();
         }
     }
@@ -50,7 +55,7 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
         return world.getPlayers(EntityPlayerMP.class, player -> pos.distanceSq(player.getPosition()) <= 225 );
     }
 
-    public void onUpdate(int throughput, long historic){
+    public void onUpdate(long throughput, long historic){
         this.throughput = throughput;
         this.historic = historic;
     }
@@ -64,7 +69,7 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     }
 
     // Access methods for GUIs
-    public String getRate(){ return variant.unit.format(throughput) + "/t"; }
+    public String getRate(){ return variant.unit.format( ((double)throughput)/TP_FACTOR) + "/t"; }
     public String getTotal(){ return variant.unit.format(historic); }
     public Buffer getDeviceBuffer(){ return buffer; }
 }

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 
 public class ContainerCounter extends Container {
     private static final int SIZE = 1;
@@ -16,13 +17,13 @@ public class ContainerCounter extends Container {
     public int size = -1;
     public int stored = -1;
 
-    public ContainerCounter(IInventory playerInventory, TileEntityDeviceCounter te){
+    public ContainerCounter(IInventory inv, TileEntityDeviceCounter te){
+        for(int i = 0; i < 9; i++)
+            addSlotToContainer(new Slot(inv, i, 8+(18*i), 150));
+        for(int j = 0; j < 3; j++)
+        for(int i = 0; i < 9; i++)
+            addSlotToContainer(new Slot(inv, i+(j*9)+9, 8+(18*i), 92+(18*j)));
         this.te = te;
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer entityPlayer) {
-        return true;
     }
 
     @Override
@@ -31,21 +32,18 @@ public class ContainerCounter extends Container {
         Buffer buffer = te.getDeviceBuffer();
         int sz = buffer.getSize();
         if(size != sz){
-            sendUpdate(SIZE, sz);
+            update(SIZE, sz);
             size = sz;
         }
         int st = buffer.getStored();
         if(stored != st){
-            sendUpdate(STORED, st);
+            update(STORED, st);
             stored = st;
         }
     }
 
-    private void sendUpdate(int prop, int val){
-        for(IContainerListener listener : listeners) {
-            listener.sendWindowProperty(this, prop, val);
-        }
-    }
+    private void update(int prop, int val){ for(IContainerListener l : listeners) l.sendWindowProperty(this, prop, val); }
+    @Override public boolean canInteractWith(EntityPlayer entityPlayer){ return true; }
 
     @Override
     public void updateProgressBar(int prop, int val) {
