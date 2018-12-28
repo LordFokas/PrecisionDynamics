@@ -1,5 +1,6 @@
 package lordfokas.precisiondynamics.devices.base;
 
+import cofh.api.tileentity.IReconfigurableSides;
 import lordfokas.precisiondynamics.devices.BlockDevice;
 import lordfokas.precisiondynamics.devices.base.buffer.Buffer;
 import lordfokas.precisiondynamics.devices.base.buffer.BufferEnergy;
@@ -17,7 +18,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TileEntityBase extends TileEntity{
+public class TileEntityBase extends TileEntity implements IReconfigurableSides {
     private final Map<Direction, Face> ioConfig = new EnumMap<>(Direction.class);
     private final Map<Face, List<ICapabilityComponent>> ioComponents = new EnumMap<>(Face.class);
 
@@ -121,7 +122,7 @@ public class TileEntityBase extends TileEntity{
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         List<ICapabilityComponent> components = getComponentsOnSide(facing);
         if(components != null)
-            for(ICapabilityComponent component : components){
+            for(ICapabilityComponent component : components)
                 if(component.getCapability() == capability){
                     if(component instanceof Buffer) { // If the component is a buffer, only allow that face's operation.
                         Direction direction = Direction.offset(getFacing(), facing);
@@ -130,7 +131,31 @@ public class TileEntityBase extends TileEntity{
                     }
                     return (T) component;
                 }
-            }
         return null;
+    }
+
+    @Override
+    public boolean decrSide(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean incrSide(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean setSide(int i, int i1) {
+        return false;
+    }
+
+    @Override
+    public boolean resetSides() {
+        return false;
+    }
+
+    @Override
+    public int getNumConfig(int i) {
+        return 0;
     }
 }
