@@ -15,7 +15,10 @@ public enum PacketHandler implements IMessageHandler<PacketBase, PacketBase> {
     INSTANCE;
 
     private SimpleNetworkWrapper network;
-    private final List<Class<? extends PacketBase>> clientPackets = new LinkedList<Class<? extends PacketBase>>(){{}};
+    private final List<Class<? extends PacketBase>> clientPackets = new LinkedList<Class<? extends PacketBase>>(){{
+        add(PacketUpdateAutoTransfer.class);
+    }};
+
     private final List<Class<? extends PacketBase>> serverPackets = new LinkedList<Class<? extends PacketBase>>(){{
         add(PacketUpdateCounterStats.class);
     }};
@@ -37,8 +40,14 @@ public enum PacketHandler implements IMessageHandler<PacketBase, PacketBase> {
         return null;
     }
 
+    /** Send a packet from the server to this list of players. */
     public void send(PacketBase packet, List<EntityPlayerMP> players){
         for(EntityPlayerMP player : players)
             network.sendTo(packet, player);
+    }
+
+    /** Send a packet from this client to the server. */
+    public void send(PacketBase packet){
+        network.sendToServer(packet);
     }
 }

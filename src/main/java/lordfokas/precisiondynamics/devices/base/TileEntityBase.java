@@ -14,6 +14,8 @@ import lordfokas.precisiondynamics.devices.base.configuration.Direction;
 import lordfokas.precisiondynamics.devices.base.configuration.Face;
 import lordfokas.precisiondynamics.devices.base.configuration.Operation;
 import lordfokas.precisiondynamics.devices.base.resources.Variant;
+import lordfokas.precisiondynamics.packets.PacketHandler;
+import lordfokas.precisiondynamics.packets.PacketUpdateAutoTransfer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -142,7 +144,7 @@ implements IReconfigurableSides, IReconfigurableFacing, ITransferControl, ISided
         return null;
     }
 
-    // IReconfigurableSides
+    // IReconfigurableSides // TODO
     @Override
     public boolean decrSide(int side){
         return false;
@@ -179,15 +181,29 @@ implements IReconfigurableSides, IReconfigurableFacing, ITransferControl, ISided
     @Override public boolean hasTransferOut(){ return true; }
     @Override public boolean getTransferIn(){ return autopull; }
     @Override public boolean getTransferOut(){ return autopush; }
-    @Override public boolean setTransferIn(boolean autopull){ this.autopull = autopull; return true; }
-    @Override public boolean setTransferOut(boolean autopush){ this.autopush = autopush; return true; }
+
+    @Override public boolean setTransferIn(boolean autopull){ this.autopull = autopull; return sendAutoTransferUpdate(); }
+    @Override public boolean setTransferOut(boolean autopush){ this.autopush = autopush; return sendAutoTransferUpdate(); }
+
+    private boolean sendAutoTransferUpdate(){
+        if(world.isRemote)
+            PacketHandler.INSTANCE.send(new PacketUpdateAutoTransfer(world, pos, autopull, autopush));
+        return true;
+    }
+
+    public void updateAutoTransfer(boolean autopull, boolean autopush){
+        this.autopull = autopull;
+        this.autopush = autopush;
+    }
 
     // ISidedTexture
     @Override public int getNumPasses(){ return 1; }
 
+    // TODO: move and finalize this
     private static final ResourceLocation s = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_side.png");
     private static final ResourceLocation t = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_top.png");
     private static final ResourceLocation b = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_bottom.png");
+
     @Override
     public TextureAtlasSprite getTexture(int side, int pass){
         switch (side){
