@@ -18,7 +18,6 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     private final Buffer<?, ?> buffer;
     public long historic = 0;
     public long throughput = 0;
-    private boolean autopush = true, autopull = false;
 
     public TileEntityDeviceCounter(Variant variant) {
         super(variant);
@@ -31,8 +30,8 @@ public class TileEntityDeviceCounter extends TileEntityDevice implements ITickab
     @Override
     public void update() {
         if(world.isRemote) return;
-        if(autopush) pushAdjacent(buffer, Face.ORANGE);
-        if(autopull) pullAdjacent(buffer, Face.BLUE);
+        if(getTransferOut()) pushAdjacent(buffer, Face.ORANGE);
+        if(getTransferIn())  pullAdjacent(buffer, Face.BLUE);
         if(world.getWorldTime() % CYCLE_TICKS == 0){
             throughput = buffer.getOutputAmount();
             buffer.resetAmounts();

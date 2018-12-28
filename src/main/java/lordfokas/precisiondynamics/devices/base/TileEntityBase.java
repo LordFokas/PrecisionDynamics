@@ -1,6 +1,10 @@
 package lordfokas.precisiondynamics.devices.base;
 
+import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
+import cofh.api.tileentity.ITransferControl;
+import cofh.core.render.ISidedTexture;
+import lordfokas.precisiondynamics.PrecisionDynamics;
 import lordfokas.precisiondynamics.devices.BlockDevice;
 import lordfokas.precisiondynamics.devices.base.buffer.Buffer;
 import lordfokas.precisiondynamics.devices.base.buffer.BufferEnergy;
@@ -10,17 +14,21 @@ import lordfokas.precisiondynamics.devices.base.configuration.Direction;
 import lordfokas.precisiondynamics.devices.base.configuration.Face;
 import lordfokas.precisiondynamics.devices.base.configuration.Operation;
 import lordfokas.precisiondynamics.devices.base.resources.Variant;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class TileEntityBase extends TileEntity implements IReconfigurableSides {
+public class TileEntityBase extends TileEntity
+implements IReconfigurableSides, IReconfigurableFacing, ITransferControl, ISidedTexture {
     private final Map<Direction, Face> ioConfig = new EnumMap<>(Direction.class);
     private final Map<Face, List<ICapabilityComponent>> ioComponents = new EnumMap<>(Face.class);
+    private boolean autopush = true, autopull = false;
 
     protected TileEntityBase(){
         ioComponents.put(Face.NONE, new LinkedList<>());
@@ -78,7 +86,7 @@ public class TileEntityBase extends TileEntity implements IReconfigurableSides {
     /** @return all the directions these faces (interface colors) exist in. */
     protected final List<EnumFacing> getFacingsFromFaces(Face ... faces){
         List<EnumFacing> facings = new LinkedList<>();
-        EnumFacing from = getFacing();
+        EnumFacing from = getDeviceFacing();
         for(Map.Entry<Direction, Face> entry : ioConfig.entrySet())
         for(Face face : faces){
             if(face == entry.getValue()){
@@ -99,14 +107,14 @@ public class TileEntityBase extends TileEntity implements IReconfigurableSides {
     }
 
     /** @return what direction this device is facing. */
-    protected EnumFacing getFacing(){
+    protected EnumFacing getDeviceFacing(){
         if(blockType instanceof BlockDevice) return ((BlockDevice)blockType).getFacing(world.getBlockState(pos));
         return EnumFacing.NORTH;
     }
 
     /** @return all components mapped to the face (interface color) that might exist in this direction. */
     private List<ICapabilityComponent> getComponentsOnSide(EnumFacing facing){
-        Direction direction = Direction.offset(getFacing(), facing);
+        Direction direction = Direction.offset(getDeviceFacing(), facing);
         Face face = ioConfig.get(direction);
         return ioComponents.get(face);
     }
@@ -125,7 +133,7 @@ public class TileEntityBase extends TileEntity implements IReconfigurableSides {
             for(ICapabilityComponent component : components)
                 if(component.getCapability() == capability){
                     if(component instanceof Buffer) { // If the component is a buffer, only allow that face's operation.
-                        Direction direction = Direction.offset(getFacing(), facing);
+                        Direction direction = Direction.offset(getDeviceFacing(), facing);
                         Face face = ioConfig.get(direction);
                         ((Buffer) component).setMode(face.allows(Operation.OUTPUT), face.allows(Operation.INPUT));
                     }
@@ -134,28 +142,58 @@ public class TileEntityBase extends TileEntity implements IReconfigurableSides {
         return null;
     }
 
+    // IReconfigurableSides
     @Override
-    public boolean decrSide(int i) {
+    public boolean decrSide(int side){
         return false;
     }
 
     @Override
-    public boolean incrSide(int i) {
+    public boolean incrSide(int side){
         return false;
     }
 
     @Override
-    public boolean setSide(int i, int i1) {
+    public boolean setSide(int side, int config){
         return false;
     }
 
     @Override
-    public boolean resetSides() {
+    public boolean resetSides(){
         return false;
     }
 
     @Override
-    public int getNumConfig(int i) {
+    public int getNumConfig(int side){
         return 0;
+    }
+
+    // IReconfigurableFacing
+    @Override public int getFacing(){ return getDeviceFacing().ordinal(); }
+    @Override public boolean allowYAxisFacing(){ return false; } // NEVER!
+    @Override public boolean rotateBlock(){ return false; } // Maybe some day. If you behave well.
+    @Override public boolean setFacing(int side, boolean alternate){ return false; } // Not today.
+
+    // ITransferControl
+    @Override public boolean hasTransferIn(){ return true; }
+    @Override public boolean hasTransferOut(){ return true; }
+    @Override public boolean getTransferIn(){ return autopull; }
+    @Override public boolean getTransferOut(){ return autopush; }
+    @Override public boolean setTransferIn(boolean autopull){ this.autopull = autopull; return true; }
+    @Override public boolean setTransferOut(boolean autopush){ this.autopush = autopush; return true; }
+
+    // ISidedTexture
+    @Override public int getNumPasses(){ return 1; }
+
+    private static final ResourceLocation s = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_side.png");
+    private static final ResourceLocation t = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_top.png");
+    private static final ResourceLocation b = new ResourceLocation(PrecisionDynamics.MODID, "textures/device_bottom.png");
+    @Override
+    public TextureAtlasSprite getTexture(int side, int pass){
+        switch (side){
+            case 0: return PrecisionDynamics.proxy.getBlockSprite(b);
+            case 1: return PrecisionDynamics.proxy.getBlockSprite(t);
+            default: return PrecisionDynamics.proxy.getBlockSprite(s);
+        }
     }
 }
