@@ -33,8 +33,8 @@ public class BufferFluid extends Buffer<IFluidHandler, BufferFluid> implements I
     }
 
     @Override public Capability<IFluidHandler> getCapability() { return CAPABILITY_FLUID; }
-    @Override public NBTTagCompound serialize() { return tank.writeToNBT(new NBTTagCompound()); }
-    @Override public void deserialize(NBTTagCompound data) { tank.readFromNBT(data); }
+    @Override protected NBTTagCompound serialize() { return tank.writeToNBT(new NBTTagCompound()); }
+    @Override protected void deserialize(NBTTagCompound data) { tank.readFromNBT(data); }
     @Override public IFluidTankProperties[] getTankProperties() { return tank.getTankProperties(); }
 
     @Override

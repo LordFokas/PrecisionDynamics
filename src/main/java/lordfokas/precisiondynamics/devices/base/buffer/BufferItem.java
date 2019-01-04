@@ -64,8 +64,8 @@ public class BufferItem extends Buffer<IItemHandler, BufferItem> implements IIte
     }
 
     @Override public Capability<IItemHandler> getCapability() { return CAPABILITY_ITEM; }
-    @Override public NBTTagCompound serialize() { return inventory.serializeNBT(); }
-    @Override public void deserialize(NBTTagCompound data) { inventory.deserializeNBT(data); }
+    @Override protected NBTTagCompound serialize() { return inventory.serializeNBT(); }
+    @Override protected void deserialize(NBTTagCompound data) { inventory.deserializeNBT(data); }
     @Override public int getSlots() { return inventory.getSlots(); }
     @Override public int getSlotLimit(int i) { return inventory.getSlotLimit(i); }
     @Nonnull @Override public ItemStack getStackInSlot(int i) { return inventory.getStackInSlot(i); }

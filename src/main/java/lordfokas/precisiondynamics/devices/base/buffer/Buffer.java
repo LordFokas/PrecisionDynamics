@@ -11,8 +11,8 @@ public abstract class Buffer<C, T extends Buffer<C, T>> implements ICapabilityCo
     public abstract void refill(T other);
     public abstract void pushInto(C capability);
     public abstract void pullFrom(C capability);
-    public abstract NBTTagCompound serialize();
-    public abstract void deserialize(NBTTagCompound data);
+    protected abstract NBTTagCompound serialize();
+    protected abstract void deserialize(NBTTagCompound data);
 
     public void setMode(boolean output, boolean input){
         canOutput = output;
@@ -43,6 +43,7 @@ public abstract class Buffer<C, T extends Buffer<C, T>> implements ICapabilityCo
         data.setInteger("input", input);
         data.setBoolean("canOutput", canOutput);
         data.setBoolean("canInput", canInput);
+        data.setBoolean("isCounting", isCounting);
         data.setTag("variant", serialize());
         return data;
     }
@@ -53,7 +54,25 @@ public abstract class Buffer<C, T extends Buffer<C, T>> implements ICapabilityCo
         input = data.getInteger("input");
         canOutput = data.getBoolean("canOutput");
         canInput = data.getBoolean("canInput");
+        isCounting = data.getBoolean("isCounting");
         deserialize(data.getCompoundTag("variant"));
+    }
+
+    public static NBTTagCompound wrap(Buffer buffer){
+        NBTTagCompound nbt = buffer.serializeNBT();
+        nbt.setString("bufferClass", buffer.getClass().getName());
+        return nbt;
+    }
+
+    public static Buffer unwrap(NBTTagCompound nbt){
+        try{
+            Class bufferClass = Class.forName(nbt.getString("bufferClass"));
+            Buffer buffer = (Buffer) bufferClass.getConstructor().newInstance();
+            buffer.deserializeNBT(nbt);
+            return buffer;
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     // Access methods for GUIs

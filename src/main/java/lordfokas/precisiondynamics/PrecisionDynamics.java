@@ -24,11 +24,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = PrecisionDynamics.MODID, name = PrecisionDynamics.NAME, version = PrecisionDynamics.VERSION,
-        dependencies = "required-after:thermalexpansion")
+        dependencies = PrecisionDynamics.DEPENDENCIES)
 public class PrecisionDynamics{
     public static final String MODID = "precisiondynamics";
     public static final String NAME = "Precision Dynamics";
     public static final String VERSION = "0.0.1-dev";
+    public static final String DEPENDENCIES = "required-after:cofhcore@[4.3.10,];"
+                                            + "required-after:thermalexpansion@[5.3.10,];"
+                                            + "required-after:codechickenlib@[3.1.6,]";
     public static final Logger logger = LogManager.getLogger(MODID);;
 
     @Instance(MODID)
@@ -53,6 +56,7 @@ public class PrecisionDynamics{
 
         PacketHandler.INSTANCE.init();
         proxy.registerTESRs();
+        proxy.registerClientHandlers();
     }
 
     @EventHandler
@@ -110,10 +114,10 @@ public class PrecisionDynamics{
                     instance.crossover
             );
 
-            GameRegistry.registerTileEntity(TileEntityDeviceBalancer.class, "te_balancer");
-            GameRegistry.registerTileEntity(TileEntityDeviceCounter.class, "te_counter");
-            GameRegistry.registerTileEntity(TileEntityDevicePrioritizer.class, "te_prioritizer");
-            GameRegistry.registerTileEntity(TileEntityCrossover.class, "te_crossover");
+            GameRegistry.registerTileEntity(TileEntityDeviceBalancer.class, "precisiondynamics:balancer");
+            GameRegistry.registerTileEntity(TileEntityDeviceCounter.class, "precisiondynamics:counter");
+            GameRegistry.registerTileEntity(TileEntityDevicePrioritizer.class, "precisiondynamics:prioritizer");
+            GameRegistry.registerTileEntity(TileEntityCrossover.class, "precisiondynamics:crossover");
         }
 
         @SubscribeEvent

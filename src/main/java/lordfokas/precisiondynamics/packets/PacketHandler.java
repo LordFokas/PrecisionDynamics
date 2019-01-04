@@ -15,13 +15,17 @@ public enum PacketHandler implements IMessageHandler<PacketBase, PacketBase> {
     INSTANCE;
 
     private SimpleNetworkWrapper network;
-    private final List<Class<? extends PacketBase>> clientPackets = new LinkedList<Class<? extends PacketBase>>(){{
-        add(PacketUpdateAutoTransfer.class);
-    }};
 
-    private final List<Class<? extends PacketBase>> serverPackets = new LinkedList<Class<? extends PacketBase>>(){{
-        add(PacketUpdateCounterStats.class);
-    }};
+    @SuppressWarnings("unchecked")
+    private static final Class<? extends PacketBase>[] clientPackets = new Class[]{
+        PacketUpdateAutoTransfer.class,
+        PacketUpdateColorInterface.class
+    };
+
+    @SuppressWarnings("unchecked")
+    private static final Class<? extends PacketBase>[] serverPackets = new Class[]{
+        PacketUpdateCounterStats.class
+    };
 
     public void init(){
         network = NetworkRegistry.INSTANCE.newSimpleChannel(PrecisionDynamics.MODID);

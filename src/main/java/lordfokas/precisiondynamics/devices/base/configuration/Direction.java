@@ -45,4 +45,11 @@ public enum Direction {
             default: return null;
         }
     }
+
+    public static Direction lookup(String name){
+        for(Direction dir : values())
+            if(dir.name().equals(name))
+                return dir;
+        return null;
+    }
 }

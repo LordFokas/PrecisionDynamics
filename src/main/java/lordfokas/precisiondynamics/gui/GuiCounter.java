@@ -25,8 +25,8 @@ public class GuiCounter extends GuiContainerCore {
         super.ySize = HEIGHT;
         this.container = container;
         this.te = te;
-        this.gauge = new Gauge(te.variant, this);
-        this.stack = DeviceType.COUNTER.getStack(te.variant);
+        this.gauge = new Gauge(te.getVariant(), this);
+        this.stack = DeviceType.COUNTER.getStack(te.getVariant());
     }
 
     @Override

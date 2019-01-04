@@ -1,11 +1,10 @@
 package lordfokas.precisiondynamics.devices;
 
-import lordfokas.precisiondynamics.devices.base.resources.Variant;
-import lordfokas.precisiondynamics.devices.base.TileEntityDevice;
+import lordfokas.precisiondynamics.devices.base.TileEntityBase;
 
-public class TileEntityDevicePrioritizer extends TileEntityDevice {
+public class TileEntityDevicePrioritizer extends TileEntityBase {
 
-    public TileEntityDevicePrioritizer(Variant variant) {
-        super(variant);
+    public TileEntityDevicePrioritizer() {
+
     }
 }

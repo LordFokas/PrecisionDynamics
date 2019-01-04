@@ -1,6 +1,8 @@
 package lordfokas.precisiondynamics.devices.base.configuration;
 
-public enum Face {
+import net.minecraft.util.IStringSerializable;
+
+public enum Face implements IStringSerializable {
     BLUE(Operation.INPUT),
     GREEN(Operation.INPUT),
     PURPLE(Operation.INPUT),
@@ -16,5 +18,10 @@ public enum Face {
 
     public boolean allows(Operation operation){
         return this.operation == operation;
+    }
+
+    @Override
+    public String getName(){
+        return name().toLowerCase();
     }
 }

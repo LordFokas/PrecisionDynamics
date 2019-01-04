@@ -1,4 +1,4 @@
-package lordfokas.precisiondynamics.renderers;
+package lordfokas.precisiondynamics.render;
 
 import lordfokas.precisiondynamics.devices.TileEntityDeviceCounter;
 import net.minecraft.client.gui.FontRenderer;

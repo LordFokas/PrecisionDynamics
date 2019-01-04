@@ -25,7 +25,7 @@ public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implement
     @Override public Capability<IEnergyStorage> getCapability() { return CAPABILITY_ENERGY; }
 
     @Override
-    public NBTTagCompound serialize() {
+    protected NBTTagCompound serialize() {
         NBTTagCompound data = new NBTTagCompound();
         data.setInteger("capacity", storage.getMaxEnergyStored());
         data.setInteger("stored", storage.getEnergyStored());
@@ -33,7 +33,7 @@ public class BufferEnergy extends Buffer<IEnergyStorage, BufferEnergy> implement
     }
 
     @Override
-    public void deserialize(NBTTagCompound data) {
+    protected void deserialize(NBTTagCompound data) {
         int capacity = data.getInteger("capacity");
         int stored = data.getInteger("stored");
         storage = new EnergyStorage(capacity, capacity, capacity, stored);

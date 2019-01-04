@@ -14,8 +14,8 @@
 		},
 		"variant": {
 			"energy": { "textures": { "bright": "precisiondynamics:face_counter_energy" } },
-			"fluid": { "textures": { "bright": "precisiondynamics:face_counter_fluid" } },
-			"item": { "textures": { "bright": "precisiondynamics:face_counter_item" } }
+			"fluid":  { "textures": { "bright": "precisiondynamics:face_counter_fluid" } },
+			"item":   { "textures": { "bright": "precisiondynamics:face_counter_item" } }
 		}
 	}
 }
